@@ -1,5 +1,5 @@
 // 人生復盤：離線快取。先用手機裡的版本立即開啟，同時在背景抓新版，下次打開就是最新的。
-const CACHE = 'fupan-v2';
+const CACHE = 'fupan-v3';
 const FILES = ['./', './index.html', './manifest.json', './xlsx.mini.min.js', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', e => {
