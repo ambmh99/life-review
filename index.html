@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#176B5E">
+<title>人生復盤</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#F3F5F4;--card:#fff;--ink:#17262B;--mute:#56666B;--line:#DCE3E1;--acc:#176B5E;--acc2:#0F4D43;--tint:#E2F0EC;--warnbg:#FFF1DC;--warn:#7A4A00}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","Noto Sans CJK TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 28px) 16px calc(100px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:16px}
+h1{margin:0;font-size:24px;line-height:1.3}
+h2{margin:0;font-size:16px}
+.sub{margin:0;font-size:14px;color:var(--mute)}
+.small{font-size:12px;color:var(--mute)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:8px}
+.between{justify-content:space-between}
+.flex1{flex:1}
+.btn{min-height:44px;border-radius:10px;border:1px solid var(--line);background:#fff;padding:0 14px;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.pri{background:var(--acc);color:#fff;border:0;font-weight:700}
+.btn.big{min-height:52px;width:100%;border-radius:14px;font-size:16px}
+.btn.link{border:0;background:none;color:var(--acc);font-weight:700;padding:0 6px;min-height:40px}
+.btn.danger{color:#A12A20;border-color:#EBC3BF}
+.btn:disabled{opacity:.3;cursor:default}
+.pill{display:flex;align-items:center;gap:6px;background:#FBE4E1;color:#9E2A22;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.tier{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px}
+.tier.pri{background:var(--acc);color:#fff;border-color:var(--acc)}
+.tier .badge{width:48px;height:48px;border-radius:12px;background:var(--tint);color:var(--acc);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex:none}
+.tier.pri .badge{background:#fff}
+.tier .t{font-size:16px;font-weight:700}
+.tier .d{font-size:13px;color:var(--mute)}
+.tier.pri .d{color:#DDEFEA}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal .wd{text-align:center;font-size:12px;color:var(--mute)}
+.day{height:40px;border-radius:8px;background:var(--bg);position:relative;display:flex;align-items:center;justify-content:center;border:0;padding:0;font-size:13px;color:var(--mute)}
+.day.blank{background:none}
+.day.fut{background:#fff;border:1px dashed var(--line)}
+.day.today{background:var(--tint);border:2px solid var(--acc);color:var(--acc);font-weight:700}
+.day.sel{outline:2px solid var(--ink);outline-offset:1px}
+.day.has .n{position:absolute;top:2px;left:4px;font-size:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:36px;padding:0 14px;border-radius:999px;border:1px solid #C9D6D2;background:#fff;font-size:13px;display:inline-flex;align-items:center}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.acc.on{background:var(--acc);border-color:var(--acc)}
+label.q{display:flex;gap:10px;align-items:center;font-size:15px;font-weight:700}
+.num{width:24px;height:24px;border-radius:999px;background:var(--acc);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+textarea,input[type=text],input[type=date],input[type=time]{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px;line-height:1.5;background:#FAFBFB}
+textarea{resize:vertical;min-height:68px}
+input:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:0;border-color:var(--acc)}
+.guide{background:#F3F8F6;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.glabel{font-size:13px;color:var(--mute)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding:6px 8px calc(8px + env(safe-area-inset-bottom));z-index:5}
+.tabbar button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:52px;font-size:12px;color:var(--mute)}
+.tabbar button.on{color:var(--acc);font-weight:700}
+.rech{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 10px) 12px 12px;z-index:4;display:flex;flex-direction:column;gap:10px}
+.bar{height:6px;border-radius:999px;background:#E6EBEA;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:999px;transition:width .9s linear}
+.bar.warn i{background:#D98A1E}
+.banner{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--warnbg);color:var(--warn);border-radius:10px;padding:8px 8px 8px 12px;font-size:13px;font-weight:500}
+.banner.red{background:#FBE4E1;color:#9E2A22}
+.hidden{display:none!important}
+.recfoot{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:6px;text-align:center}
+.recfoot>*{max-width:520px;width:100%;margin:0 auto}
+.tm{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.tm.warn{color:#8A5300}
+.stat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-size:22px}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#E6EBEA;border-radius:12px;padding:4px}
+.seg button{min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--mute);font-size:14px}
+.seg button.on{background:#fff;color:var(--ink);font-weight:700}
+.card.act{flex-direction:row;align-items:flex-start;gap:12px}
+.chk{width:44px;height:44px;margin:-10px -8px -10px -10px;border:0;background:none;display:flex;align-items:center;justify-content:center;flex:none}
+.chk span{width:24px;height:24px;border-radius:999px;border:2px solid #8A9B98;display:flex;align-items:center;justify-content:center}
+.chk.done span{background:var(--acc);border-color:var(--acc)}
+.due{font-size:12px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--tint);color:var(--acc2)}
+.due.soon{background:var(--warnbg);color:var(--warn)}
+.due.late{background:#FBE4E1;color:#9E2A22}
+.tagbar{display:grid;grid-template-columns:76px minmax(0,1fr) 28px;align-items:center;gap:10px;width:100%;min-height:44px;padding:4px 8px;border-radius:10px;border:1px solid transparent;background:none;text-align:left;font-size:14px}
+.tagbar.on{background:var(--tint);border-color:#9CC9BE;font-weight:700}
+.tagbar .track{height:12px;border-radius:999px;background:#E6EBEA;overflow:hidden}
+.tagbar .track i{display:block;height:100%;background:#8FB8AE;border-radius:999px}
+.tagbar.on .track i{background:var(--acc)}
+.tagbar .c{text-align:right;font-weight:700}
+.entry{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.6}
+.entry.first{border-top:0;padding-top:0}
+.ef b{font-size:12px;color:var(--mute);font-weight:500;display:block}
+.tchip{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#FBE4E1;color:#9E2A22}
+.lock{position:fixed;inset:0;background:var(--bg);z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px}
+.dots{display:flex;gap:16px}
+.dots i{width:14px;height:14px;border-radius:999px;border:2px solid var(--acc)}
+.dots i.f{background:var(--acc)}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:14px}
+.pad button{height:72px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:24px}
+.pad button.plain{border:0;background:none;font-size:15px;color:var(--mute)}
+.err{color:#A12A20;font-size:14px;min-height:20px;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(100px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;max-width:90vw;text-align:center}
+.empty{text-align:center;color:var(--mute);font-size:14px;margin:0;padding:8px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="xlsx.mini.min.js" defer></script>
+<script>
+'use strict';
+const KEY='fupan-v1';
+const TIERS={
+  std:{name:'標準版',color:'#C8372D',desc:'每日三問，可加引導提問'},
+  min:{name:'最小版',color:'#E0766B',desc:'記下 3 個關鍵時間點與事件'},
+  res:{name:'救命備案',color:'#F2B8B1',desc:'累爆了？寫一句話就好'}
+};
+const RANK={std:3,min:2,res:1};
+const WD='日一二三四五六';
+
+/* ---------- 資料 ---------- */
+function fill(s){
+  s=s||{};
+  return Object.assign({v:1,entries:[],actions:[],reviews:{},lastExport:null},s,{
+    settings:Object.assign({timerMin:5,tags:['工作','情緒','人際','健康','時間管理'],pinHash:null},s.settings||{})
+  });
+}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===1)return fill(s);}catch(e){}return fill({});}
+let S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){toast('儲存失敗，手機空間可能不足');}}
+
+/* ---------- 小工具 ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const ds=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>ds(new Date());
+const parse=s=>{const a=s.split('-').map(Number);return new Date(a[0],a[1]-1,a[2]);};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ds(d);};
+const fmtMD=s=>{const d=parse(s);return (d.getMonth()+1)+'/'+d.getDate();};
+const weekStart=s=>{const d=parse(s);d.setDate(d.getDate()-((d.getDay()+6)%7));return ds(d);};
+const daysBetween=(a,b)=>Math.round((parse(b)-parse(a))/864e5);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+pad(s%60);};
+const durTxt=sec=>{const s=Math.round(sec||0);if(s<60)return s+' 秒';return Math.floor(s/60)+' 分'+(s%60?' '+(s%60)+' 秒':'');};
+function toast(msg){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
+
+const ICON={
+  today:'<path d="M4 20h4L19 9l-4-4L4 16v4z"/>',
+  actions:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/>',
+  review:'<path d="M5 20V10M12 20V4M19 20v-7"/>',
+  settings:'<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>',
+  back:'<path d="M15 6l-6 6 6 6"/>',
+  fwd:'<path d="M9 6l6 6-6 6"/>',
+  clock:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/>',
+  bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3z"/>',
+  dl:'<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  check:'<path d="M5 12l5 5 9-10"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'
+};
+const ic=(n,s,c,w)=>`<svg aria-hidden="true" width="${s||24}" height="${s||24}" viewBox="0 0 24 24" fill="none" stroke="${c||'currentColor'}" stroke-width="${w||2}" stroke-linecap="round" stroke-linejoin="round">${ICON[n]}</svg>`;
+const xm=(c,s)=>`<svg aria-hidden="true" width="${s||22}" height="${s||22}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="3.2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>`;
+
+function tierMap(){const m={};for(const e of S.entries){if(!m[e.date]||RANK[e.tier]>RANK[m[e.date]])m[e.date]=e.tier;}return m;}
+function streak(tm){let d=today();if(!tm[d])d=addDays(d,-1);let n=0;while(tm[d]){n++;d=addDays(d,-1);}return n;}
+
+/* ---------- 介面狀態 ---------- */
+const U={view:'today',month:today().slice(0,7),day:null,actTab:'open',week:weekStart(today()),tag:null,showAll:false,rec:null,pin:null,rvd:{},newAct:'',newDue:'',newTag:''};
+
+/* ---------- 今天 ---------- */
+function vToday(){
+  const t=today(),d=parse(t),tm=tierMap(),st=streak(tm);
+  let h=`<header class="row between" style="align-items:flex-start;gap:12px"><div style="display:flex;flex-direction:column;gap:4px"><p class="sub">${d.getMonth()+1}月${d.getDate()}日 週${WD[d.getDay()]}</p><h1>${tm[t]?'今天記好了，還想補充嗎？':'今天最值得記住什麼？'}</h1></div>${st?`<div class="pill">${xm('#C8372D',14)}<span>連續 ${st} 天</span></div>`:''}</header>`;
+  if(S.entries.length&&(!S.lastExport||Date.now()-S.lastExport>30*864e5)){
+    h+=`<div class="banner"><span>${S.lastExport?'上次備份超過 30 天了':'還沒備份過'}，匯出一份 Excel 吧</span><button class="btn" style="min-height:36px" data-act="export">匯出</button></div>`;
+  }
+  const due=S.actions.filter(a=>!a.done&&a.due&&a.due<=t).sort((a,b)=>a.due<b.due?-1:1)[0];
+  if(due){
+    const late=due.due<t;
+    h+=`<section class="card" aria-label="到期的行動"><p class="small" style="margin:0;color:${late?'#9E2A22':'var(--acc)'};font-weight:700">${late?'說好要做的事，已過期 '+daysBetween(due.due,t)+' 天':'今天說好要做'}</p><p style="margin:0;font-size:17px;font-weight:500;line-height:1.5">${esc(due.title)}</p><div class="row"><button class="btn pri flex1" data-act="act-done" data-id="${due.id}">做到了</button><button class="btn flex1" data-act="act-later" data-id="${due.id}">還沒，延到明天</button></div></section>`;
+  }
+  h+=`<section style="display:flex;flex-direction:column;gap:10px"><div class="row between"><h2>選一種方式記錄</h2><span class="small">三種都算數</span></div>${tierBtn('std',true)}${tierBtn('min')}${tierBtn('res')}</section>`;
+  h+=calHTML(tm);
+  if(U.day)h+=dayHTML(U.day);
+  return h;
+}
+function tierBtn(k,pri){
+  const T=TIERS[k],b=k==='res'?'30秒':(k==='min'?'2分':S.settings.timerMin+'分');
+  return `<button class="tier${pri?' pri':''}" data-act="rec" data-tier="${k}"><span class="badge">${b}</span><span style="flex:1;display:flex;flex-direction:column;gap:2px"><span class="t">${T.name}</span><span class="d">${T.desc}</span></span>${ic('fwd',20)}</button>`;
+}
+function calHTML(tm){
+  const p=U.month.split('-').map(Number),y=p[0],m=p[1],t=today();
+  const off=(new Date(y,m-1,1).getDay()+6)%7,n=new Date(y,m,0).getDate();
+  let cells='',cnt=0;
+  for(let i=0;i<off;i++)cells+='<span class="day blank"></span>';
+  for(let d=1;d<=n;d++){
+    const s=`${y}-${pad(m)}-${pad(d)}`,k=tm[s];if(k)cnt++;
+    let cls='day';if(s===t)cls+=' today';else if(s>t)cls+=' fut';if(k)cls+=' has';if(U.day===s)cls+=' sel';
+    if(s>t)cells+=`<span class="${cls}"><span class="n">${d}</span></span>`;
+    else cells+=`<button class="${cls}" data-act="day" data-d="${s}" aria-label="${m}月${d}日${k?'，'+TIERS[k].name:'，沒有紀錄'}"><span class="n">${d}</span>${k?xm(TIERS[k].color):''}</button>`;
+  }
+  const canNext=U.month<t.slice(0,7);
+  return `<section class="card" aria-label="月曆"><div class="row between"><button class="btn link" data-act="mon" data-n="-1" aria-label="上個月">${ic('back',20)}</button><div style="text-align:center"><h2>${y} 年 ${m} 月</h2><span class="small">這個月記了 ${cnt} 天</span></div><button class="btn link" data-act="mon" data-n="1" aria-label="下個月" ${canNext?'':'disabled'}>${ic('fwd',20)}</button></div><div class="cal">${'一二三四五六日'.split('').map(w=>`<span class="wd">${w}</span>`).join('')}${cells}</div><div class="row" style="flex-wrap:wrap;gap:14px;font-size:12px;color:var(--mute)">${['std','min','res'].map(k=>`<span class="row" style="gap:4px">${xm(TIERS[k].color,14)}${TIERS[k].name}</span>`).join('')}<span>點日期看當天紀錄</span></div></section>`;
+}
+function dayHTML(s){
+  const es=S.entries.filter(e=>e.date===s).sort((a,b)=>a.created-b.created);
+  return `<section class="card" aria-label="${fmtMD(s)} 的紀錄"><div class="row between"><h2>${fmtMD(s)} 週${WD[parse(s).getDay()]} 的紀錄</h2><button class="btn link" data-act="day" data-d="${s}">收起</button></div>${es.length?es.map((e,i)=>entryHTML(e,true,i===0)).join(''):'<p class="empty">這天沒有紀錄</p>'}</section>`;
+}
+function entryHTML(e,del,first){
+  const f=(lab,v)=>v&&String(v).trim()?`<div class="ef"><b>${lab}</b>${esc(v).replace(/\n/g,'<br>')}</div>`:'';
+  let b='';
+  if(e.tier==='res')b+=f('最值得記住的一件事',e.one);
+  if(e.tier==='min')b+=(e.events||[]).map(x=>f(x.t||'時間點',x.e)).join('');
+  if(e.tier==='std'){
+    b+=f('最棒／最值得紀念',e.best)+f('沒做好',e.bad);
+    if(e.why&&e.why.length)b+=f('5Why 追原因',e.why.map((w,i)=>(i+1)+'. '+w).join('\n'));
+    b+=f('能控制的部分',e.ctrl);
+    if(e.tree)b+=f('樹葉（事實與感受）',e.tree.leaf)+f('樹幹（重複模式）',e.tree.trunk)+f('樹根（深層原因）',e.tree.root);
+    if(e.orid)b+=f('事實',e.orid.o)+f('感受',e.orid.r)+f('意義',e.orid.i)+f('決定',e.orid.d);
+    b+=f('明天一定要做',e.next);
+  }
+  const c=new Date(e.created);
+  return `<article class="entry${first?' first':''}"><div class="row between" style="align-items:flex-start"><div class="row" style="flex-wrap:wrap;gap:6px"><span class="tchip">${TIERS[e.tier].name}</span><span class="small">${fmtMD(e.date)} ${pad(c.getHours())}:${pad(c.getMinutes())} · 用時 ${durTxt(e.dur)}</span>${(e.tags||[]).map(t=>`<span class="small">#${esc(t)}</span>`).join('')}</div>${del?`<button class="btn link" style="color:#A12A20;font-weight:500;font-size:13px;min-height:32px" data-act="del-entry" data-id="${e.id}">刪除</button>`:''}</div>${b}</article>`;
+}
+
+/* ---------- 記錄 ---------- */
+let timerId=null;
+function startRec(tier){
+  const t=today();
+  U.rec={tier,date:t,start:Date.now(),limit:tier==='res'?60:S.settings.timerMin*60,extra:0,
+    f:{best:'',bad:'',next:'',ctrl:'',one:''},events:[{t:'',e:''},{t:'',e:''},{t:'',e:''}],
+    add:true,due:addDays(t,1),tags:[],g:null,why:['','','','',''],whyN:1,
+    tree:{leaf:'',trunk:'',root:''},orid:{o:'',r:'',i:'',d:''},buzz:false};
+  render();window.scrollTo(0,0);
+  clearInterval(timerId);timerId=setInterval(tick,1000);
+}
+function stopRec(){U.rec=null;clearInterval(timerId);timerId=null;}
+function tick(){
+  const r=U.rec;if(!r){clearInterval(timerId);return;}
+  const $=id=>document.getElementById(id);if(!$('tm'))return;
+  const el=(Date.now()-r.start)/1000,lim=r.limit+r.extra,rem=Math.max(0,lim-el);
+  $('tm').textContent=fmt(Math.ceil(rem));$('tmax').textContent='/ '+fmt(lim);
+  $('bari').style.width=(rem/lim*100)+'%';
+  $('bar').setAttribute('aria-valuenow',String(Math.round(rem)));
+  const low=rem<=60;
+  $('bar').classList.toggle('warn',low);$('tm').classList.toggle('warn',low);
+  $('warn').classList.toggle('hidden',!(low&&rem>0&&lim>90));
+  $('over').classList.toggle('hidden',rem>0);
+  if(rem<=0&&!r.buzz){r.buzz=true;try{navigator.vibrate&&navigator.vibrate([200,100,200]);}catch(e){}}
+  $('used').textContent='本次已用 '+durTxt(el);
+}
+function hasContent(){
+  const r=U.rec;if(!r)return false;
+  const vals=[...Object.values(r.f),...r.events.map(x=>x.e),...r.why,...Object.values(r.tree),...Object.values(r.orid)];
+  return vals.some(v=>String(v).trim());
+}
+function vRec(){
+  const r=U.rec,T=TIERS[r.tier],d=parse(r.date);
+  let h=`<div class="rech"><div class="row" style="max-width:520px;width:100%;margin:0 auto"><button class="btn link" style="width:44px;color:var(--ink)" data-act="rec-cancel" aria-label="返回">${ic('back',22)}</button><div class="flex1"><h1 style="font-size:17px">${T.name}${r.tier==='std'?' · 每日三問':''}</h1><span class="small">${d.getMonth()+1}月${d.getDate()}日 週${WD[d.getDay()]}</span></div><div class="row" style="gap:4px;color:var(--mute)">${ic('clock',18)}<span id="tm" class="tm" style="color:var(--ink)">${fmt(r.limit)}</span><span class="small" id="tmax">/ ${fmt(r.limit)}</span></div></div>
+<div style="max-width:520px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:10px"><div class="bar" id="bar" role="progressbar" aria-label="剩餘秒數" aria-valuemin="0" aria-valuemax="${r.limit+r.extra}"><i id="bari" style="width:100%"></i></div>
+<div class="banner hidden" id="warn"><span>剩不到 1 分鐘，該收尾了</span><button class="btn" style="min-height:36px;white-space:nowrap" data-act="rec-more">再給我 2 分鐘</button></div>
+<div class="banner red hidden" id="over"><span>時間到，先存起來吧</span><span class="row" style="gap:6px"><button class="btn" style="min-height:36px" data-act="rec-more">再 2 分鐘</button><button class="btn pri" style="min-height:36px" data-act="rec-save">存起來</button></span></div></div></div>
+<div class="wrap" style="padding-top:16px;padding-bottom:24px">`;
+  const q=(n,lab,key,ph)=>`<section class="card"><label class="q" for="f-${key}"><span class="num">${n}</span>${lab}</label><textarea id="f-${key}" data-f="${key}" rows="2" placeholder="${ph||''}">${esc(r.f[key])}</textarea>`;
+  if(r.tier==='std'){
+    h+=q(1,'今天做的最棒/最值得紀念的事','best','做對了什麼、值得保留的')+'</section>';
+    h+=q(2,'今天哪裡沒做好？','bad','對事不對人，寫下事實就好')+guideHTML()+'</section>';
+    h+=q(3,'明天一定要做的一件事？','next','具體一點：做什麼、做到什麼程度')+`<div class="row between" style="flex-wrap:wrap"><label class="row" style="font-size:14px;min-height:44px"><input type="checkbox" id="addAct" ${r.add?'checked':''} style="width:20px;height:20px;accent-color:var(--acc);margin:0">加入行動清單</label><label class="row small">期限<input type="date" id="due" value="${r.due}" style="width:auto;padding:6px 10px;font-size:14px"></label></div></section>`;
+  }
+  if(r.tier==='min'){
+    h+=`<section class="card"><h2>記下今天的關鍵時間點</h2><p class="small" style="margin:0">只記事實就好，不用反思</p>${r.events.map((ev,i)=>`<div class="row" style="align-items:stretch"><input type="time" data-ev="${i}" data-k="t" value="${esc(ev.t)}" aria-label="第 ${i+1} 個時間點" style="width:118px;flex:none"><input type="text" data-ev="${i}" data-k="e" value="${esc(ev.e)}" placeholder="發生了什麼？" aria-label="第 ${i+1} 個事件"></div>`).join('')}${r.events.length<6?'<button class="btn link" style="align-self:flex-start" data-act="ev-more">＋ 再加一個</button>':''}</section>`;
+  }
+  if(r.tier==='res'){
+    h+=`<section class="card"><label class="q" for="f-one">今天最值得記住的一件事</label><textarea id="f-one" data-f="one" rows="3" placeholder="一句話就好">${esc(r.f.one)}</textarea></section>`;
+  }
+  h+=`<section style="display:flex;flex-direction:column;gap:10px;padding:0 4px"><h2 style="font-size:14px">標籤</h2><div class="chips" role="group" aria-label="標籤">${S.settings.tags.map(t=>{const on=r.tags.includes(t);return `<button class="chip${on?' on':''}" aria-pressed="${on}" data-act="tag" data-t="${esc(t)}">${esc(t)}</button>`;}).join('')}<button class="chip" style="border-style:dashed;color:var(--mute)" data-act="tag-new">＋ 新增</button></div></section>`;
+  h+=`</div><div class="recfoot"><button class="btn pri big" data-act="rec-save">儲存並打叉</button><span class="small" id="used">本次已用 0 秒</span></div>`;
+  return h;
+}
+function guideHTML(){
+  const r=U.rec;
+  let h=`<div class="guide"><div class="row" style="font-size:14px;font-weight:700;color:var(--acc)">${ic('bulb',18)}幫我想深一點</div><div class="chips" role="group" aria-label="引導方式">${[['why','5Why 追原因'],['tree','樹狀反思'],['orid','ORID']].map(a=>`<button class="chip acc${r.g===a[0]?' on':''}" aria-pressed="${r.g===a[0]}" data-act="guide" data-g="${a[0]}">${a[1]}</button>`).join('')}</div>`;
+  if(!r.g)h+='<p class="small" style="margin:0">想找原因選 5Why；想了解自己選樹狀反思；心裡卡著情緒選 ORID。不想深入也沒關係。</p>';
+  if(r.g==='why'){
+    const P=['這件事為什麼會發生？','那個原因又是為什麼？','再往下一層呢？','還能再往下嗎？','最根本的原因是？'];
+    for(let i=0;i<r.whyN;i++)h+=`<div class="field"><label class="glabel" for="w${i}">為什麼 ${'①②③④⑤'[i]}　${P[i]}</label><input type="text" id="w${i}" data-why="${i}" value="${esc(r.why[i])}" placeholder="${i>=2?'覺得挖到底了，就可以停':''}"></div>`;
+    h+=`<div class="row between"><span class="small">最多問到第 5 層</span>${r.whyN<5?'<button class="btn link" data-act="why-more">再問一層 →</button>':''}</div>`;
+    h+=`<div class="field"><label class="glabel" for="f-ctrl">這裡面哪些是你能控制的？</label><textarea id="f-ctrl" data-f="ctrl" rows="2">${esc(r.f.ctrl)}</textarea></div><p class="small" style="margin:0">想好下次怎麼做，寫在第 3 題，就會加入行動清單。</p>`;
+  }
+  if(r.g==='tree'){
+    [['leaf','樹葉：當下發生什麼？你的感受是？'],['trunk','樹幹：這種情況以前也發生過嗎？通常在什麼場合？'],['root','樹根：你覺得背後是在擔心什麼、在意什麼？']].forEach(a=>{h+=`<div class="field"><label class="glabel" for="t-${a[0]}">${a[1]}</label><textarea id="t-${a[0]}" data-tree="${a[0]}" rows="2">${esc(r.tree[a[0]])}</textarea></div>`;});
+  }
+  if(r.g==='orid'){
+    [['o','事實：客觀上發生了什麼？'],['r','感受：當時和現在的感受？'],['i','意義：這件事教會你什麼？'],['d','決定：下次遇到，你決定怎麼做？']].forEach(a=>{h+=`<div class="field"><label class="glabel" for="o-${a[0]}">${a[1]}</label><textarea id="o-${a[0]}" data-orid="${a[0]}" rows="2">${esc(r.orid[a[0]])}</textarea></div>`;});
+  }
+  return h+'</div>';
+}
+function saveRec(){
+  const r=U.rec;if(!r)return;
+  const e={id:uid(),date:r.date,tier:r.tier,created:Date.now(),dur:Math.round((Date.now()-r.start)/1000),tags:r.tags.slice()};
+  if(r.tier==='res'){if(!r.f.one.trim())return toast('先寫一句話再存');e.one=r.f.one.trim();}
+  if(r.tier==='min'){const ev=r.events.filter(x=>x.e.trim()).map(x=>({t:x.t,e:x.e.trim()}));if(!ev.length)return toast('至少記一個事件再存');e.events=ev;}
+  if(r.tier==='std'){
+    const f=r.f;
+    if(!f.best.trim()&&!f.bad.trim()&&!f.next.trim())return toast('三題至少寫一題再存');
+    e.best=f.best.trim();e.bad=f.bad.trim();e.next=f.next.trim();
+    if(f.ctrl.trim())e.ctrl=f.ctrl.trim();
+    const why=r.why.map(s=>s.trim()).filter(Boolean);if(why.length)e.why=why;
+    if(Object.values(r.tree).some(v=>v.trim()))e.tree=Object.assign({},r.tree);
+    if(Object.values(r.orid).some(v=>v.trim()))e.orid=Object.assign({},r.orid);
+    if(r.add&&e.next)S.actions.push({id:uid(),title:e.next,due:r.due||addDays(r.date,1),src:fmtMD(r.date)+' 每日三問',created:Date.now(),done:false,doneAt:null});
+  }
+  S.entries.push(e);save();stopRec();U.view='today';U.day=null;U.month=today().slice(0,7);
+  render();window.scrollTo(0,0);toast('存好了，今天打上紅叉');
+}
+
+/* ---------- 行動 ---------- */
+function vActions(){
+  const t=today(),ws=weekStart(t),we=addDays(ws,6);
+  const open=S.actions.filter(a=>!a.done).sort((a,b)=>(a.due||'9')<(b.due||'9')?-1:1);
+  const doneW=S.actions.filter(a=>a.done&&a.doneAt&&ds(new Date(a.doneAt))>=ws).length;
+  const pend=open.filter(a=>a.due&&a.due<=we).length;
+  const rate=doneW+pend?Math.round(doneW/(doneW+pend)*100)+'%':'—';
+  let h=`<header style="display:flex;flex-direction:column;gap:4px"><h1>行動清單</h1><p class="sub">復盤寫下的改進，在這裡追到做完</p></header><div class="stat"><div><b>${open.length}</b><span class="small">進行中</span></div><div><b>${doneW}</b><span class="small">本週完成</span></div><div><b style="color:var(--acc)">${rate}</b><span class="small">本週完成率</span></div></div>`;
+  h+=`<section class="card"><label class="glabel" for="newAct">新增一個行動</label><input type="text" id="newAct" value="${esc(U.newAct)}" placeholder="例如：會議前先寫下 3 個重點"><div class="row"><input type="date" id="newDue" value="${U.newDue||addDays(t,1)}" aria-label="期限" style="flex:1"><button class="btn pri" data-act="act-add">新增</button></div></section>`;
+  h+=`<div class="seg" role="tablist" aria-label="行動狀態"><button role="tab" aria-selected="${U.actTab==='open'}" class="${U.actTab==='open'?'on':''}" data-act="acttab" data-v="open">進行中</button><button role="tab" aria-selected="${U.actTab==='done'}" class="${U.actTab==='done'?'on':''}" data-act="acttab" data-v="done">已完成</button></div>`;
+  const list=U.actTab==='open'?open:S.actions.filter(a=>a.done).sort((a,b)=>b.doneAt-a.doneAt);
+  if(!list.length)h+=`<p class="empty">${U.actTab==='open'?'目前沒有待做的行動。做標準版時，第 3 題會自動加進來。':'還沒有完成的行動'}</p>`;
+  h+=list.map(a=>actHTML(a,t)).join('');
+  return h;
+}
+function actHTML(a,t){
+  let cls='due',txt=a.due?fmtMD(a.due)+' 前':'沒有期限';
+  if(a.done)txt=fmtMD(ds(new Date(a.doneAt)))+' 完成';
+  else if(a.due){
+    if(a.due<t){cls+=' late';txt='過期 '+daysBetween(a.due,t)+' 天';}
+    else if(a.due===t){cls+=' soon';txt='今天';}
+    else if(a.due===addDays(t,1)){cls+=' soon';txt='明天';}
+  }
+  return `<div class="card act"><button class="chk${a.done?' done':''}" data-act="act-toggle" data-id="${a.id}" aria-label="${a.done?'改回未完成':'標記完成'}"><span>${a.done?ic('check',14,'#fff',3):''}</span></button><div class="flex1" style="display:flex;flex-direction:column;gap:8px;min-width:0"><p style="margin:0;font-size:16px;font-weight:500;line-height:1.45;${a.done?'text-decoration:line-through;color:var(--mute)':''}">${esc(a.title)}</p><div class="row" style="flex-wrap:wrap;gap:6px"><span class="${cls}">${txt}</span>${a.src?`<span class="small">來自 ${esc(a.src)}</span>`:''}</div><div class="row" style="gap:4px;margin-left:-6px">${a.done?'':`<button class="btn link" style="font-weight:500;font-size:13px;min-height:32px" data-act="act-later" data-id="${a.id}">延到明天</button>`}<button class="btn link" style="font-weight:500;font-size:13px;min-height:32px;color:#A12A20" data-act="act-del" data-id="${a.id}">刪除</button></div></div></div>`;
+}
+
+/* ---------- 週回顧 ---------- */
+function vReview(){
+  const ws=U.week,we=addDays(ws,6),t=today(),tm=tierMap();
+  const ents=S.entries.filter(e=>e.date>=ws&&e.date<=we).sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.created-b.created);
+  const days=new Set(ents.map(e=>e.date)).size;
+  const avg=ents.length?(ents.reduce((s,e)=>s+(e.dur||0),0)/ents.length/60).toFixed(1):'—';
+  const doneW=S.actions.filter(a=>{if(!a.done||!a.doneAt)return false;const d=ds(new Date(a.doneAt));return d>=ws&&d<=we;}).length;
+  const pend=S.actions.filter(a=>!a.done&&a.due&&a.due<=we).length,tot=doneW+pend;
+  const canNext=ws<weekStart(t);
+  let h=`<header class="row between" style="align-items:flex-start;gap:8px"><div style="display:flex;flex-direction:column;gap:2px"><p class="small" style="margin:0;color:var(--acc);font-weight:700">魚視角 · 每週回顧</p><div class="row" style="gap:0;margin-left:-6px"><button class="btn link" data-act="wk" data-n="-7" aria-label="上一週">${ic('back',20)}</button><h1 style="font-size:22px">${fmtMD(ws)} – ${fmtMD(we)}</h1><button class="btn link" data-act="wk" data-n="7" aria-label="下一週" ${canNext?'':'disabled'}>${ic('fwd',20)}</button></div></div><button class="btn" style="font-size:13px;white-space:nowrap" data-act="export">${ic('dl',16)}匯出 Excel</button></header>`;
+  h+=`<div class="stat"><div><b>${days}<span class="small" style="font-weight:400"> / 7 天</span></b><span class="small">有記錄</span></div><div><b>${avg}<span class="small" style="font-weight:400"> 分</span></b><span class="small">平均用時</span></div><div><b>${doneW}<span class="small" style="font-weight:400"> / ${tot}</span></b><span class="small">行動完成</span></div></div>`;
+  h+=`<section class="card" aria-label="本週每日" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;padding:14px 10px">${[0,1,2,3,4,5,6].map(i=>{const d=addDays(ws,i),k=tm[d];return `<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span class="small">${'一二三四五六日'[i]}</span><span style="width:36px;height:36px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;box-sizing:border-box;${d===t?'border:2px solid var(--acc)':''}">${k?xm(TIERS[k].color,20):''}</span><span class="small" style="font-size:11px">${parse(d).getDate()}</span></div>`;}).join('')}</section>`;
+  if(!ents.length){h+='<p class="empty">這週還沒有紀錄</p>';}
+  else{
+    const cnt={};ents.forEach(e=>(e.tags||[]).forEach(g=>{cnt[g]=(cnt[g]||0)+1;}));
+    const tags=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]),mx=tags.length?cnt[tags[0]]:1;
+    h+=`<section class="card" aria-label="標籤統計"><div class="row between"><h2>這週出現最多的標籤</h2>${tags.length?'<span class="small">點一下看紀錄</span>':''}</div>`;
+    if(!tags.length)h+='<p class="small" style="margin:0">記錄時加上標籤，這裡就會統計出現次數，幫你看出重複的模式。</p>';
+    h+=tags.map(g=>{const on=U.tag===g;return `<button class="tagbar${on?' on':''}" aria-pressed="${on}" data-act="tagsel" data-t="${esc(g)}"><span>${esc(g)}</span><span class="track"><i style="width:${Math.round(cnt[g]/mx*100)}%"></i></span><span class="c">${cnt[g]}</span></button>`;}).join('');
+    h+='</section>';
+    if(U.tag&&cnt[U.tag]){
+      const list=ents.filter(e=>(e.tags||[]).includes(U.tag));
+      h+=`<section class="card"><h2 style="font-size:14px">「${esc(U.tag)}」這週的 ${list.length} 則紀錄</h2>${list.map((e,i)=>entryHTML(e,false,i===0)).join('')}</section>`;
+    }
+    h+=`<button class="btn" data-act="allw">${U.showAll?'收起這週全部紀錄':'看這週全部 '+ents.length+' 則紀錄'}</button>`;
+    if(U.showAll)h+=`<section class="card">${ents.map((e,i)=>entryHTML(e,false,i===0)).join('')}</section>`;
+  }
+  const old=S.reviews[ws];
+  if(!U.rvd[ws])U.rvd[ws]=Object.assign({q1:'',q2:'',q3:'',q4:''},old||{});
+  const dr=U.rvd[ws];
+  const Q=[['q1','1. 這週哪個狀況重複出現了？','看看上面的標籤和紀錄'],['q2',`2. 行動完成 ${doneW} / ${tot}，沒完成的卡在哪？`,'寫下卡住的原因'],['q3','3. 這週最值得保留的做法是什麼？','做對了什麼？'],['q4','4. 下週要嘗試一件什麼新做法？','會自動加入行動清單']];
+  h+=`<section class="card" aria-label="週回顧提問"><div class="row between"><h2>回答 4 個問題</h2>${old&&old.saved?`<span class="small">${fmtMD(ds(new Date(old.saved)))} 已完成</span>`:''}</div>${Q.map(a=>`<div class="field"><label for="rv-${a[0]}" style="font-size:14px;font-weight:500">${a[1]}</label><textarea id="rv-${a[0]}" data-rv="${a[0]}" rows="2" placeholder="${a[2]}">${esc(dr[a[0]])}</textarea></div>`).join('')}<button class="btn pri big" data-act="rv-save">${old&&old.saved?'更新週回顧':'完成週回顧'}</button></section>`;
+  return h;
+}
+function saveReview(){
+  const ws=U.week,dr=U.rvd[ws];
+  if(!dr||!['q1','q2','q3','q4'].some(k=>(dr[k]||'').trim()))return toast('至少回答一題再存');
+  const old=S.reviews[ws]||{};
+  const rv={q1:(dr.q1||'').trim(),q2:(dr.q2||'').trim(),q3:(dr.q3||'').trim(),q4:(dr.q4||'').trim(),saved:Date.now(),actionId:old.actionId||null};
+  if(rv.q4){
+    const ex=rv.actionId&&S.actions.find(a=>a.id===rv.actionId);
+    if(ex){if(!ex.done)ex.title=rv.q4;}
+    else{const id=uid();S.actions.push({id,title:rv.q4,due:addDays(ws,13),src:fmtMD(ws)+' 週回顧',created:Date.now(),done:false,doneAt:null});rv.actionId=id;}
+  }
+  S.reviews[ws]=rv;save();render();toast(rv.q4?'週回顧存好了，新做法已加入行動清單':'週回顧存好了');
+}
+
+/* ---------- 設定 ---------- */
+function vSettings(){
+  const s=S.settings;
+  let h=`<header style="display:flex;flex-direction:column;gap:4px"><h1>設定</h1><p class="sub">所有資料只存在這支手機裡，不會上傳</p></header>`;
+  h+=`<section class="card"><h2>計時長度</h2><p class="small" style="margin:0">標準版和最小版的倒數時間（救命備案固定 1 分鐘）</p><div class="chips">${[3,5,10].map(m=>`<button class="chip acc${s.timerMin===m?' on':''}" aria-pressed="${s.timerMin===m}" data-act="tmin" data-m="${m}">${m} 分鐘</button>`).join('')}</div></section>`;
+  h+=`<section class="card"><h2>標籤</h2><div class="chips">${s.tags.map(t=>`<span class="chip" style="padding-right:2px">${esc(t)}<button class="btn link" style="min-height:32px;width:32px;padding:0;color:var(--mute);font-weight:400" aria-label="刪除標籤 ${esc(t)}" data-act="tag-del" data-t="${esc(t)}">×</button></span>`).join('')}</div><div class="row"><input type="text" id="newTag" value="${esc(U.newTag)}" placeholder="新標籤名稱" maxlength="10" aria-label="新標籤名稱"><button class="btn" data-act="tag-add">新增</button></div></section>`;
+  h+=`<section class="card"><div class="row between"><h2 class="row" style="gap:6px">${ic('lock',18)}密碼鎖</h2><span class="small" style="font-weight:700;color:${s.pinHash?'var(--acc)':'var(--mute)'}">${s.pinHash?'已開啟':'未開啟'}</span></div><p class="small" style="margin:0">開啟後，每次打開 App，或離開超過 1 分鐘再回來，都要輸入 4 位數密碼。</p>${s.pinHash?'<div class="row"><button class="btn flex1" data-act="pin-change">更改密碼</button><button class="btn flex1 danger" data-act="pin-off">關閉密碼鎖</button></div>':'<button class="btn pri" data-act="pin-on">設定密碼</button>'}</section>`;
+  h+=`<section class="card"><h2>備份</h2><p class="small" style="margin:0">${S.lastExport?'上次匯出：'+fmtMD(ds(new Date(S.lastExport))):'還沒匯出過'}。換手機或清除瀏覽器資料前，一定要先匯出。匯出的 Excel 之後可以匯回來。</p><button class="btn pri" data-act="export">${ic('dl',18)}匯出 Excel</button><label class="btn" for="imp">從 Excel 備份匯回</label><input type="file" id="imp" accept=".xlsx" class="hidden"></section>`;
+  h+=`<section class="card"><h2>刪除所有紀錄</h2><p class="small" style="margin:0">清除所有紀錄、行動和週回顧，設定會保留。刪除前記得先匯出。</p><button class="btn danger" data-act="wipe">刪除所有紀錄</button></section>`;
+  h+=`<p class="small" style="text-align:center;margin:0">人生復盤 v1 · 共 ${S.entries.length} 則紀錄</p>`;
+  return h;
+}
+
+/* ---------- 密碼鎖 ---------- */
+async function hashPin(p){
+  const txt='fupan:'+p;
+  if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(txt));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+  let h=0;for(const c of txt)h=(h*31+c.charCodeAt(0))|0;return 'f'+h;
+}
+function lockHTML(){
+  const p=U.pin;
+  const title={unlock:'輸入密碼',set1:'設定 4 位數密碼',set2:'再輸入一次確認',off:'輸入目前的密碼',change:'輸入目前的密碼'}[p.mode];
+  const k=['1','2','3','4','5','6','7','8','9'];
+  return `<div class="lock" role="dialog" aria-modal="true" aria-label="${title}">${ic('lock',32,'var(--acc)')}<h1 style="font-size:20px">${title}</h1><div class="dots" aria-label="已輸入 ${p.buf.length} 位">${[0,1,2,3].map(i=>`<i class="${i<p.buf.length?'f':''}"></i>`).join('')}</div><p class="err" role="alert">${esc(p.err||'')}</p><div class="pad">${k.map(n=>`<button data-act="pk" data-k="${n}">${n}</button>`).join('')}${p.mode==='unlock'?'<button class="plain" data-act="forgot">忘記密碼</button>':'<button class="plain" data-act="pin-cancel">取消</button>'}<button data-act="pk" data-k="0">0</button><button class="plain" data-act="pk" data-k="del" aria-label="刪除一位">⌫</button></div></div>`;
+}
+let pinBusy=false,pinQueue=[];
+async function pk(k){
+  if(pinBusy){pinQueue.push(k);return;}
+  await pkOne(k);
+  while(pinQueue.length&&!pinBusy)await pkOne(pinQueue.shift());
+}
+async function pkOne(k){
+  const p=U.pin;if(!p)return;
+  if(k==='del'){p.buf=p.buf.slice(0,-1);render();return;}
+  if(p.buf.length>=4)return;
+  p.buf+=k;p.err='';render();
+  if(p.buf.length<4)return;
+  pinBusy=true;
+  const b=p.buf;p.buf='';
+  if(p.mode==='set1'){p.first=b;p.mode='set2';}
+  else if(p.mode==='set2'){
+    if(b===p.first){S.settings.pinHash=await hashPin(b);save();U.pin=null;toast('密碼鎖已開啟');}
+    else{p.mode='set1';p.first='';p.err='兩次不一樣，請重新設定';}
+  }else{
+    const ok=(await hashPin(b))===S.settings.pinHash;
+    if(!ok)p.err='密碼錯誤';
+    else if(p.mode==='unlock')U.pin=null;
+    else if(p.mode==='off'){S.settings.pinHash=null;save();U.pin=null;toast('已關閉密碼鎖');}
+    else if(p.mode==='change'){p.mode='set1';}
+  }
+  pinBusy=false;render();
+}
+
+/* ---------- Excel ---------- */
+function widen(ws,w){ws['!cols']=w.map(x=>({wch:x}));}
+function exportXlsx(){
+  if(!window.XLSX)return toast('匯出元件還沒載入，請稍後再試');
+  const X=XLSX.utils,wb=X.book_new();
+  const E=S.entries.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.created-b.created).map(e=>{const tr=e.tree||{},o=e.orid||{};return {
+    '日期':e.date,'星期':'週'+WD[parse(e.date).getDay()],'方式':TIERS[e.tier].name,'用時(分)':+((e.dur||0)/60).toFixed(1),'標籤':(e.tags||[]).join('、'),
+    '最值得記住的一件事':e.one||'','時間點與事件':(e.events||[]).map(x=>(x.t?x.t+' ':'')+x.e).join('\n'),
+    '最棒/最值得紀念':e.best||'','沒做好':e.bad||'','5Why':(e.why||[]).map((w,i)=>(i+1)+'. '+w).join('\n'),'能控制的部分':e.ctrl||'',
+    '樹葉':tr.leaf||'','樹幹':tr.trunk||'','樹根':tr.root||'','ORID 事實':o.o||'','ORID 感受':o.r||'','ORID 意義':o.i||'','ORID 決定':o.d||'','明天一定要做':e.next||''};});
+  const s1=X.json_to_sheet(E.length?E:[{'日期':'（還沒有紀錄）'}]);widen(s1,[11,6,9,8,14,30,30,30,30,30,24,24,24,24,24,24,24,24,30]);X.book_append_sheet(wb,s1,'每日紀錄');
+  const A=S.actions.slice().sort((a,b)=>(a.due||'')<(b.due||'')?-1:1).map(a=>({'行動':a.title,'期限':a.due||'','來源':a.src||'','狀態':a.done?'已完成':'進行中','完成日期':a.doneAt?ds(new Date(a.doneAt)):''}));
+  const s2=X.json_to_sheet(A.length?A:[{'行動':'（還沒有行動）'}]);widen(s2,[36,11,18,8,11]);X.book_append_sheet(wb,s2,'行動清單');
+  const R=Object.keys(S.reviews).sort().map(k=>{const r=S.reviews[k];return {'週':fmtMD(k)+' – '+fmtMD(addDays(k,6)),'重複出現的狀況':r.q1,'沒完成卡在哪':r.q2,'值得保留的做法':r.q3,'下週新做法':r.q4};});
+  const s3=X.json_to_sheet(R.length?R:[{'週':'（還沒有週回顧）'}]);widen(s3,[14,30,30,30,30]);X.book_append_sheet(wb,s3,'週回顧');
+  const js=JSON.stringify(Object.assign({},S,{settings:Object.assign({},S.settings,{pinHash:null})})),rows=[['人生復盤備份 v1（匯回用，請勿修改這個工作表）']];
+  for(let i=0;i<js.length;i+=30000)rows.push([js.slice(i,i+30000)]);
+  X.book_append_sheet(wb,X.aoa_to_sheet(rows),'_備份資料');
+  const fn='人生復盤_'+today().replace(/-/g,'')+'.xlsx';
+  XLSX.writeFile(wb,fn);
+  S.lastExport=Date.now();save();render();toast('已匯出：'+fn);
+}
+async function importXlsx(file){
+  if(!window.XLSX)return toast('匯入元件還沒載入，請稍後再試');
+  try{
+    const wb=XLSX.read(await file.arrayBuffer());
+    const sh=wb.Sheets['_備份資料'];if(!sh)return toast('這個檔案不是復盤 App 匯出的備份');
+    const rows=XLSX.utils.sheet_to_json(sh,{header:1,raw:true});
+    const data=JSON.parse(rows.slice(1).map(r=>r[0]||'').join(''));
+    if(data.v!==1||!Array.isArray(data.entries))throw new Error('bad');
+    if(!confirm(`備份裡有 ${data.entries.length} 則紀錄、${(data.actions||[]).length} 個行動。\n匯回後會取代手機裡現在的資料，確定嗎？`))return;
+    const pin=S.settings.pinHash;S=fill(data);S.settings.pinHash=pin;save();U.rvd={};render();toast('匯回完成');
+  }catch(e){toast('讀取失敗，檔案可能損壞或不是備份檔');}
+}
+
+/* ---------- 畫面 ---------- */
+const app=document.getElementById('app');
+function tabbar(){
+  return `<nav class="tabbar" aria-label="主要分頁">${[['today','今天'],['actions','行動'],['review','回顧'],['settings','設定']].map(a=>`<button class="${U.view===a[0]?'on':''}" ${U.view===a[0]?'aria-current="page"':''} data-act="view" data-v="${a[0]}">${ic(a[0],24)}${a[1]}</button>`).join('')}</nav>`;
+}
+function render(){
+  let h;
+  if(U.pin&&U.pin.mode==='unlock')h='';
+  else if(U.rec)h=vRec();
+  else h=`<main class="wrap">${({today:vToday,actions:vActions,review:vReview,settings:vSettings})[U.view]()}</main>`+tabbar();
+  if(U.pin)h+=lockHTML();
+  app.innerHTML=h;
+  if(U.rec&&!U.pin)tick();
+}
+const find=id=>S.actions.find(a=>a.id===id);
+function act(a,d){
+  const t=today();let x;
+  switch(a){
+    case 'view':U.view=d.v;U.tag=null;U.showAll=false;if(d.v==='review')U.week=weekStart(t);if(d.v==='today')U.month=t.slice(0,7);render();window.scrollTo(0,0);break;
+    case 'rec':startRec(d.tier);break;
+    case 'rec-cancel':if(hasContent()&&!confirm('還沒存，確定要離開嗎？'))return;stopRec();render();break;
+    case 'rec-save':saveRec();break;
+    case 'rec-more':U.rec.extra+=120;U.rec.buzz=false;tick();break;
+    case 'guide':U.rec.g=U.rec.g===d.g?null:d.g;render();break;
+    case 'why-more':U.rec.whyN=Math.min(5,U.rec.whyN+1);render();{const el=document.getElementById('w'+(U.rec.whyN-1));if(el)el.focus();}break;
+    case 'ev-more':U.rec.events.push({t:'',e:''});render();break;
+    case 'tag':{const i=U.rec.tags.indexOf(d.t);if(i<0)U.rec.tags.push(d.t);else U.rec.tags.splice(i,1);render();break;}
+    case 'tag-new':{const n=(prompt('新增標籤名稱（10 個字以內）')||'').trim().slice(0,10);if(!n)return;if(!S.settings.tags.includes(n)){S.settings.tags.push(n);save();}if(!U.rec.tags.includes(n))U.rec.tags.push(n);render();break;}
+    case 'day':U.day=U.day===d.d?null:d.d;render();break;
+    case 'mon':{const p=U.month.split('-').map(Number),dt=new Date(p[0],p[1]-1+Number(d.n),1);U.month=dt.getFullYear()+'-'+pad(dt.getMonth()+1);U.day=null;render();break;}
+    case 'act-done':if((x=find(d.id))){x.done=true;x.doneAt=Date.now();save();toast('做到了！');}render();break;
+    case 'act-toggle':if((x=find(d.id))){x.done=!x.done;x.doneAt=x.done?Date.now():null;save();if(x.done)toast('做到了！');}render();break;
+    case 'act-later':if((x=find(d.id))){x.due=addDays(t,1);save();toast('延到明天了');}render();break;
+    case 'act-del':if(confirm('刪除這個行動？')){S.actions=S.actions.filter(y=>y.id!==d.id);save();render();}break;
+    case 'act-add':{const ti=U.newAct.trim();if(!ti)return toast('先寫下要做什麼');S.actions.push({id:uid(),title:ti,due:U.newDue||addDays(t,1),src:'手動新增',created:Date.now(),done:false,doneAt:null});U.newAct='';U.newDue='';U.actTab='open';save();render();toast('已加入');break;}
+    case 'acttab':U.actTab=d.v;render();break;
+    case 'wk':U.week=addDays(U.week,Number(d.n));U.tag=null;U.showAll=false;render();break;
+    case 'tagsel':U.tag=U.tag===d.t?null:d.t;render();break;
+    case 'allw':U.showAll=!U.showAll;render();break;
+    case 'rv-save':saveReview();break;
+    case 'export':exportXlsx();break;
+    case 'tmin':S.settings.timerMin=Number(d.m);save();render();break;
+    case 'tag-del':if(confirm(`刪除標籤「${d.t}」？舊紀錄上的標籤會保留。`)){S.settings.tags=S.settings.tags.filter(y=>y!==d.t);save();render();}break;
+    case 'tag-add':{const n=U.newTag.trim().slice(0,10);if(!n)return;if(!S.settings.tags.includes(n))S.settings.tags.push(n);U.newTag='';save();render();break;}
+    case 'pin-on':U.pin={mode:'set1',buf:'',first:'',err:''};render();break;
+    case 'pin-off':U.pin={mode:'off',buf:'',err:''};render();break;
+    case 'pin-change':U.pin={mode:'change',buf:'',first:'',err:''};render();break;
+    case 'pin-cancel':U.pin=null;render();break;
+    case 'pk':pk(d.k);break;
+    case 'forgot':
+      if(confirm('密碼無法找回。唯一的辦法是清除這支手機裡的所有復盤資料，之後可以用匯出過的 Excel 匯回。要清除嗎？')&&confirm('真的確定嗎？沒匯出過的紀錄會永久消失。')){
+        localStorage.removeItem(KEY);S=fill({});U.pin=null;U.rvd={};render();toast('已清除，可以重新開始');
+      }break;
+    case 'del-entry':if(confirm('刪除這則紀錄？')){S.entries=S.entries.filter(e=>e.id!==d.id);save();render();}break;
+    case 'wipe':if(confirm('確定刪除所有紀錄、行動和週回顧？')&&confirm('真的確定嗎？刪除後無法復原。')){S=fill({settings:S.settings,lastExport:S.lastExport});save();U.rvd={};U.day=null;render();toast('已刪除');}break;
+  }
+}
+app.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||b.disabled)return;act(b.dataset.act,b.dataset);});
+app.addEventListener('input',e=>{
+  const t=e.target,ds_=t.dataset,r=U.rec;
+  if(r){
+    if(ds_.f!=null)r.f[ds_.f]=t.value;
+    if(ds_.why!=null)r.why[+ds_.why]=t.value;
+    if(ds_.tree!=null)r.tree[ds_.tree]=t.value;
+    if(ds_.orid!=null)r.orid[ds_.orid]=t.value;
+    if(ds_.ev!=null)r.events[+ds_.ev][ds_.k]=t.value;
+    if(t.id==='due')r.due=t.value;
+  }
+  if(ds_.rv!=null&&U.rvd[U.week])U.rvd[U.week][ds_.rv]=t.value;
+  if(t.id==='newAct')U.newAct=t.value;
+  if(t.id==='newDue')U.newDue=t.value;
+  if(t.id==='newTag')U.newTag=t.value;
+});
+app.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='addAct'&&U.rec)U.rec.add=t.checked;
+  if(t.id==='due'&&U.rec)U.rec.due=t.value;
+  if(t.id==='newDue')U.newDue=t.value;
+  if(t.id==='imp'&&t.files&&t.files[0]){importXlsx(t.files[0]);t.value='';}
+});
+document.addEventListener('keydown',e=>{if(!U.pin)return;if(/^[0-9]$/.test(e.key))pk(e.key);else if(e.key==='Backspace')pk('del');});
+let hiddenAt=0;
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){hiddenAt=Date.now();return;}
+  if(S.settings.pinHash&&!U.pin&&hiddenAt&&Date.now()-hiddenAt>60000){U.pin={mode:'unlock',buf:'',err:''};}
+  render();
+});
+
+if(S.settings.pinHash)U.pin={mode:'unlock',buf:'',err:''};
+render();
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(e){}
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>
